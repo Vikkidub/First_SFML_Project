@@ -16,13 +16,20 @@ struct Game {
 
 	float fruitVerticalPosition = 100;
 	float fruitHorizontalPosition = 10;
-	float fruitSize = 25;
+	float fruitSize = 20;
 
 	float rotVerticalPosition = 0;
 	float rotHorizontalPosition = 0;
 
-	float GetRandomNumber() {
-		return rand() % 200 + 1;
+	float GetRandomPosition() {
+		int randomNumber = rand() % 3 + 1;
+		if (randomNumber == 1) {
+			return 20;
+		}
+		else if (randomNumber == 2) {
+			return 80;
+		}
+		else { return 140; }
 	}
 
 	void start() {
@@ -42,7 +49,7 @@ struct Game {
 		sf::CircleShape fruit(fruitSize);
 		fruit.setFillColor(sf::Color::Green);
 	//	fruit.setPosition(fruitHorizontalPosition, fruitVerticalPosition);
-		fruit.setPosition(GetRandomNumber(), GetRandomNumber());
+		fruit.setPosition(GetRandomPosition(), GetRandomPosition());
 
 		sf::ConvexShape rot;
 		rot.setPointCount(3);
@@ -50,7 +57,7 @@ struct Game {
 		rot.setPoint(1, sf::Vector2f(40.f, 0.f));
 		rot.setPoint(2, sf::Vector2f(20.f, 40.f));
 		rot.setFillColor(sf::Color::Red);
-		rot.setPosition(GetRandomNumber(), GetRandomNumber());
+		rot.setPosition(GetRandomPosition(), GetRandomPosition());
 		rotHorizontalPosition = rot.getPosition().x;
 		rotVerticalPosition = rot.getPosition().y;
 
@@ -98,19 +105,19 @@ struct Game {
 
 	void fall() {
 		if (fruitVerticalPosition <= 190 && gameInProgress) {
-			fruitVerticalPosition += 0.02f;
+			fruitVerticalPosition += 0.03f;
 		}
 		else {
 			fruitVerticalPosition = 0;
-			fruitHorizontalPosition = GetRandomNumber();
+			fruitHorizontalPosition = GetRandomPosition();
 		}
 
 		if (rotVerticalPosition <= 190 && gameInProgress) {
-			rotVerticalPosition += 0.02f;
+			rotVerticalPosition += 0.03f;
 		}
 		else {
 			rotVerticalPosition = 0;
-			rotHorizontalPosition = GetRandomNumber();
+			rotHorizontalPosition = GetRandomPosition();
 		}
 	}
 };
