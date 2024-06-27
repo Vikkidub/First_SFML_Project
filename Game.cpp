@@ -18,13 +18,14 @@ struct Game {
 	float fruitHorizontalPosition = 10;
 	float fruitSize = 25;
 
-	float GetRandomNumber()
-	{
+	float rotVerticalPosition = 0;
+	float rotHorizontalPosition = 0;
+
+	float GetRandomNumber() {
 		return rand() % 200 + 1;
 	}
 
-	void start()
-	{
+	void start() {
 		std::cout << "Game start\n";
 
 		srand(time(0));
@@ -40,34 +41,29 @@ struct Game {
 
 		sf::CircleShape fruit(fruitSize);
 		fruit.setFillColor(sf::Color::Green);
-		fruit.setPosition(fruitHorizontalPosition, fruitVerticalPosition);
+	//	fruit.setPosition(fruitHorizontalPosition, fruitVerticalPosition);
+		fruit.setPosition(GetRandomNumber(), GetRandomNumber());
 
-		sf::ConvexShape triangle;
-		triangle.setPointCount(3);
-		triangle.setPoint(0, sf::Vector2f(0.f, 0.f));
-		triangle.setPoint(1, sf::Vector2f(40.f, 0.f));
-		triangle.setPoint(2, sf::Vector2f(20.f, 40.f));
-		triangle.setFillColor(sf::Color::Red);
-		triangle.setPosition(GetRandomNumber(), GetRandomNumber());
+		sf::ConvexShape rot;
+		rot.setPointCount(3);
+		rot.setPoint(0, sf::Vector2f(0.f, 0.f));
+		rot.setPoint(1, sf::Vector2f(40.f, 0.f));
+		rot.setPoint(2, sf::Vector2f(20.f, 40.f));
+		rot.setFillColor(sf::Color::Red);
+		rot.setPosition(GetRandomNumber(), GetRandomNumber());
+		rotHorizontalPosition = rot.getPosition().x;
+		rotVerticalPosition = rot.getPosition().y;
 
-		while (window.isOpen())
-		{
+		while (window.isOpen()) {
 			sf::Event event;
-			while (window.pollEvent(event))
-			{
+			while (window.pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
 					window.close();
 
 				if (event.type == sf::Event::KeyPressed) {
-					/*		if (event.key.code == sf::Keyboard::Up) player.move(0, -25);
-							if (event.key.code == sf::Keyboard::Down) player.move(0, 25);
-							if (event.key.code == sf::Keyboard::Left) player.move(-50, 0);
-							if (event.key.code == sf::Keyboard::Right) player.move(50, 0);
-					*/
-
-					if (event.key.code == sf::Keyboard::Left) player.setPosition(0, 175);
-					if (event.key.code == sf::Keyboard::Down) player.setPosition(60, 175);
-					if (event.key.code == sf::Keyboard::Right) player.setPosition(120, 175);
+					if (event.key.code == sf::Keyboard::A) player.setPosition(0, 175);
+					if (event.key.code == sf::Keyboard::S) player.setPosition(60, 175);
+					if (event.key.code == sf::Keyboard::D) player.setPosition(120, 175);
 				}
 			}
 
@@ -77,6 +73,7 @@ struct Game {
 			fall();
 
 			fruit.setPosition(fruitHorizontalPosition, fruitVerticalPosition);
+			rot.setPosition(rotHorizontalPosition, rotVerticalPosition);
 
 			if (collision()) {
 				std::cout << "Collision detected\n";
@@ -86,7 +83,7 @@ struct Game {
 			window.draw(background);
 			window.draw(player);
 			window.draw(fruit);
-			window.draw(triangle);
+			window.draw(rot);
 			window.display();
 		}
 	}
@@ -101,11 +98,19 @@ struct Game {
 
 	void fall() {
 		if (fruitVerticalPosition <= 190 && gameInProgress) {
-			fruitVerticalPosition += 0.1f;
-			//	std::cout << "fruit y-pos ++\n";
+			fruitVerticalPosition += 0.02f;
 		}
-		else
+		else {
 			fruitVerticalPosition = 0;
-		//	gameInProgress = false;
+			fruitHorizontalPosition = GetRandomNumber();
+		}
+
+		if (rotVerticalPosition <= 190 && gameInProgress) {
+			rotVerticalPosition += 0.02f;
+		}
+		else {
+			rotVerticalPosition = 0;
+			rotHorizontalPosition = GetRandomNumber();
+		}
 	}
 };
