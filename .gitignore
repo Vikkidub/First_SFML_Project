@@ -1,5 +1,5 @@
 ## SFML library files
-/include
+/include/SFML
 /lib
 
 ## Ignore Visual Studio temporary files, build results, and
