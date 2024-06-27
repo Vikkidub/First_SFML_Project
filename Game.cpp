@@ -42,6 +42,18 @@ struct Game {
 		sf::RectangleShape background(sf::Vector2f(levelWidth, levelHeight));
 		background.setFillColor(sf::Color::Blue);
 
+		sf::Font font;
+		if (!font.loadFromFile("C:/Program Files (x86)/Karla (Font)/static/Karla-Regular.ttf")) {
+			std::cout << "Failed to load font\n";
+		}
+
+		sf::Text text;
+		text.setFont(font);
+		text.setString("Does this work?");
+		text.setCharacterSize(24);
+		text.setFillColor(sf::Color::White);
+		text.setStyle(sf::Text::Bold);
+
 		sf::RectangleShape player(sf::Vector2f(playerWidth, playerHeight));
 		player.setFillColor(sf::Color::White);
 		player.setPosition(playerHorizontalPosition, playerVerticalPosition);
@@ -88,6 +100,7 @@ struct Game {
 
 			window.clear();
 			window.draw(background);
+			window.draw(text);
 			window.draw(player);
 			window.draw(fruit);
 			window.draw(rot);
